@@ -614,6 +614,20 @@ define Device/buffalo_wsr-6000ax8
 endef
 TARGET_DEVICES += buffalo_wsr-6000ax8
 
+define Device/buffalo_wxr18000be10p
+  DEVICE_VENDOR := Buffalo
+  DEVICE_MODEL := WXR18000BE10P
+  DEVICE_DTS := mt7988a-buffalo-wxr18000be10p
+  DEVICE_DTS_DIR := ../dts
+  DEVICE_PACKAGES := kmod-usb3 kmod-phy-aquantia kmod-mt7996-firmware mt7988-wo-firmware
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+ifneq ($(CONFIG_TARGET_ROOTFS_INITRAMFS),)
+  ARTIFACTS := factory.bin
+  ARTIFACT/factory.bin := append-image initramfs-kernel.bin | uImage lzma
+endif
+endef
+TARGET_DEVICES += buffalo_wxr18000be10p
+
 define Device/cetron_ct3003
   DEVICE_VENDOR := Cetron
   DEVICE_MODEL := CT3003
