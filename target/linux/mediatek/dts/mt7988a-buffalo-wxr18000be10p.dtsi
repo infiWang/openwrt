@@ -287,9 +287,11 @@
 		compatible = "ethernet-phy-ieee802.3-c45";
 		reg = <0>;
 
-		reset-gpios = <&pio 71 GPIO_ACTIVE_LOW>;
-		reset-assert-us = <100000>;
-		reset-deassert-us = <1000000>;
+		/* reset-gpios = <&pio 71 GPIO_ACTIVE_LOW>;
+		* reset-assert-us = <100000>;
+		* reset-deassert-us = <221000>; */
+
+		firmware-name = "marvell/CUX3410.cld";
 	};
 
 	phy8: ethernet-phy@8 {
@@ -297,9 +299,11 @@
 		compatible = "ethernet-phy-ieee802.3-c45";
 		reg = <8>;
 
-		reset-gpios = <&pio 71 GPIO_ACTIVE_LOW>;
-		reset-assert-us = <100000>;
-		reset-deassert-us = <1000000>;
+		/* reset-gpios = <&pio 72 GPIO_ACTIVE_LOW>;
+		* reset-assert-us = <100000>;
+		* reset-deassert-us = <221000>; */
+
+		firmware-name = "marvell/CUX3410.cld";
 	};
 };
 
