@@ -38,12 +38,12 @@
 
 / {
 	aliases {
-		serial0 = &serial0;
-		label-mac-device = &gmac0;
 		led-boot = &led_diag;
 		led-failsafe = &led_diag;
 		led-running = &led_power;
 		led-upgrade = &led_diag;
+		label-mac-device = &gmac0;
+		serial0 = &serial0;
 	};
 
 	memory {
@@ -121,50 +121,56 @@
 		compatible = "gpio-leds";
 
 		led_power: led-0 {
-			color = <LED_COLOR_ID_WHITE>;
 			function = LED_FUNCTION_POWER;
+			color = <LED_COLOR_ID_WHITE>;
 			gpios = <&pio 57 GPIO_ACTIVE_HIGH>;
+			default-state = "on";
 		};
 
 		led_diag: led-1 {
 			color = <LED_COLOR_ID_AMBER>;
-			// function = LED_FUNCTION_DIAG;
 			gpios = <&pio 21 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
 		};
 
-		led_rtmode_red: led-2 {
+		led_rtmode_amber: led-2 {
 			color = <LED_COLOR_ID_AMBER>;
-			// function = LED_FUNCTION_WLAN;
 			gpios = <&pio 68 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
 		};
 
-		led_rtmode_green: led-3 {
-			color = <LED_COLOR_ID_GREEN>;
-			function = LED_FUNCTION_INDICATOR;
+		led_rtmode_white: led-3 {
+			color = <LED_COLOR_ID_WHITE>;
 			gpios = <&pio 70 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
 		};
 
-		led_internet_red: led-4 {
-			color = <LED_COLOR_ID_RED>;
+		led_internet_amber: led-4 {
+			function = LED_FUNCTION_WAN;
+			color = <LED_COLOR_ID_AMBER>;
 			gpios = <&pio 66 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
 		};
 
-		led_internet_green: led-5 {
-			color = <LED_COLOR_ID_GREEN>;
+		led_internet_white: led-5 {
 			function = LED_FUNCTION_WAN_ONLINE;
+			color = <LED_COLOR_ID_WHITE>;
 			gpios = <&pio 67 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
 		};
 
-		led_wireless_red: led-6 {
-			color = <LED_COLOR_ID_RED>;
-			function = LED_FUNCTION_WPS;
-			gpios = <&pio 64 GPIO_ACTIVE_HIGH>;
-		};
-
-		led_wireless_green: led-7 {
-			color = <LED_COLOR_ID_GREEN>;
+		led_wireless_amber: led-6 {
 			function = LED_FUNCTION_WLAN;
+			color = <LED_COLOR_ID_AMBER>;
+			gpios = <&pio 64 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+
+		led_wireless_white: led-7 {
+			function = LED_FUNCTION_WLAN;
+			color = <LED_COLOR_ID_WHITE>;
 			gpios = <&pio 65 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
 		};
 	};
 };
