@@ -138,7 +138,8 @@ platform_do_upgrade() {
 	asus,rt-ax59u|\
 	asus,tuf-ax4200|\
 	asus,tuf-ax6000|\
-	asus,zenwifi-bt8)
+	asus,zenwifi-bt8|\
+	buffalo,wxr18000be10p)
 		CI_UBIPART="UBI_DEV"
 		CI_KERNPART="linux"
 		nand_do_upgrade "$1"
