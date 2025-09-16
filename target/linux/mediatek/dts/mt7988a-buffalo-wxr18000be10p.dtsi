@@ -38,10 +38,10 @@
 
 / {
 	aliases {
-		led-boot = &led_diag;
-		led-failsafe = &led_diag;
-		led-running = &led_power;
-		led-upgrade = &led_diag;
+		led-boot = &led_power_amber;
+		led-failsafe = &led_router_amber;
+		led-running = &led_power_white;
+		led-upgrade = &led_power_amber;
 		label-mac-device = &gmac0;
 		serial0 = &serial0;
 	};
@@ -120,15 +120,15 @@
 	gpio-leds {
 		compatible = "gpio-leds";
 
-		led_power: led-0 {
+		led_power_white: led-0 {
 			function = LED_FUNCTION_POWER;
 			color = <LED_COLOR_ID_WHITE>;
 			gpios = <&pio 57 GPIO_ACTIVE_HIGH>;
 			default-state = "on";
 		};
 
-		led_diag: led-1 {
-			function = LED_FUNCTION_INDICATOR;
+		led_power_amber: led-1 {
+			function = LED_FUNCTION_POWER;
 			color = <LED_COLOR_ID_AMBER>;
 			gpios = <&pio 21 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
@@ -149,7 +149,7 @@
 		};
 
 		led_internet_amber: led-4 {
-			function = LED_FUNCTION_WAN;
+			function = LED_FUNCTION_WAN_ONLINE;
 			color = <LED_COLOR_ID_AMBER>;
 			gpios = <&pio 66 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
