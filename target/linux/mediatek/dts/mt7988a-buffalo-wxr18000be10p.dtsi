@@ -38,10 +38,10 @@
 
 / {
 	aliases {
-		led-boot = &led_power_amber;
+		led-boot = &led_router_amber;
 		led-failsafe = &led_router_amber;
-		led-running = &led_power_white;
-		led-upgrade = &led_power_amber;
+		led-running = &led_router_white;
+		led-upgrade = &led_router_amber;
 		label-mac-device = &gmac0;
 		serial0 = &serial0;
 	};
@@ -134,13 +134,6 @@
 			default-state = "off";
 		};
 
-		led_router_amber: led-2 {
-			function = LED_FUNCTION_STATUS;
-			color = <LED_COLOR_ID_AMBER>;
-			gpios = <&pio 68 GPIO_ACTIVE_HIGH>;
-			default-state = "off";
-		};
-
 		led_router_white: led-3 {
 			function = LED_FUNCTION_STATUS;
 			color = <LED_COLOR_ID_WHITE>;
@@ -148,10 +141,10 @@
 			default-state = "off";
 		};
 
-		led_internet_amber: led-4 {
-			function = LED_FUNCTION_WAN_ONLINE;
+		led_router_amber: led-2 {
+			function = LED_FUNCTION_STATUS;
 			color = <LED_COLOR_ID_AMBER>;
-			gpios = <&pio 66 GPIO_ACTIVE_HIGH>;
+			gpios = <&pio 68 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
 		};
 
@@ -162,10 +155,10 @@
 			default-state = "off";
 		};
 
-		led_wireless_amber: led-6 {
-			function = LED_FUNCTION_WLAN;
+		led_internet_amber: led-4 {
+			function = LED_FUNCTION_WAN_ONLINE;
 			color = <LED_COLOR_ID_AMBER>;
-			gpios = <&pio 64 GPIO_ACTIVE_HIGH>;
+			gpios = <&pio 66 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
 		};
 
@@ -173,6 +166,13 @@
 			function = LED_FUNCTION_WLAN;
 			color = <LED_COLOR_ID_WHITE>;
 			gpios = <&pio 65 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+
+		led_wireless_amber: led-6 {
+			function = LED_FUNCTION_WLAN;
+			color = <LED_COLOR_ID_AMBER>;
+			gpios = <&pio 64 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
 		};
 	};
@@ -292,7 +292,7 @@
 
 &mdio_bus {
 	phy0: ethernet-phy@0 {
-		/* Marvell CUX3410, LAN 10G Port */
+		/* Marvell CUX3410, LAN1 Port */
 		compatible = "ethernet-phy-ieee802.3-c45";
 		reg = <0>;
 
@@ -304,7 +304,7 @@
 	};
 
 	phy8: ethernet-phy@8 {
-		/* Marvell CUX3410, WAN 10G Port */
+		/* Marvell CUX3410, INTERNET Port */
 		compatible = "ethernet-phy-ieee802.3-c45";
 		reg = <8>;
 
