@@ -56,7 +56,9 @@ buffalo,wxr18000be10p|\
 buffalo,wxr18000be10p-ubootmod)
 	ucidef_set_led_default "power" "POWER" "white:power" "1"
 	ucidef_set_led_netdev "internet" "INTERNET" "white:wan_online" "wan" "link"
-	ucidef_set_led_netdev "wireless" "WIRELESS" "white:wlan" "phy0-ap0 phy1-ap0" "link"
+	ucidef_set_led_netdev "wireless2g" "WIRELESS-2G" "white:wlan" "phy0-ap0" "link"
+	ucidef_set_led_netdev "wireless5g" "WIRELESS-5G" "white:wlan" "phy1-ap0" "link"
+	ucidef_set_led_netdev "wireless6g" "WIRELESS-6G" "white:wlan" "phy2-ap0" "link"
 	;;
 cudy,re3000-v1|\
 wavlink,wl-wn573hx3)
