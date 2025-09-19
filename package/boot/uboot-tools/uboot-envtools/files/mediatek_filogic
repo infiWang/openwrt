@@ -24,6 +24,7 @@ ubootenv_add_nor_default() {
 case "$board" in
 abt,asr3000|\
 asus,zenwifi-bt8-ubootmod|\
+buffalo,wxr18000be10p-ubootmod|\
 cmcc,a10-ubootmod|\
 cudy,tr3000-v1-ubootmod|\
 h3c,magic-nx30-pro|\
