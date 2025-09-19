@@ -226,7 +226,7 @@
 +	fs_loader0: fs-loader {
 +		compatible = "u-boot,fs-loader";
 +		mtdpart = "ubi";
-+		ubivol = "firmware";
++		ubivol = "ubi:firmware";
 +	};
 +
 +	memory@40000000 {
