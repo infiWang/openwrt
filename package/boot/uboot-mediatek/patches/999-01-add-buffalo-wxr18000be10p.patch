@@ -203,7 +203,7 @@
 +_bootmenu_update_title=setenv _bootmenu_update_title ; setenv bootmenu_title "$bootmenu_title       [33m$ver[0m"
 --- /dev/null
 +++ b/arch/arm/dts/mt7988a-buffalo-wxr18000be10p.dts
-@@ -0,0 +1,222 @@
+@@ -0,0 +1,215 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (c) 2022 MediaTek Inc.
@@ -223,8 +223,7 @@
 +		stdout-path = &uart0;
 +	};
 +
-+	fs_loader0: fs-loader@0 {
-+		bootph-all;
++	fs_loader0: fs-loader {
 +		compatible = "u-boot,fs-loader";
 +		mtdpart = "ubi";
 +		ubivol = "firmware";
@@ -259,13 +258,7 @@
 +		reset {
 +			label = "reset";
 +			linux,code = <KEY_RESTART>;
-+			gpios = <&pio 13 GPIO_ACTIVE_HIGH>;
-+		};
-+
-+		wps {
-+			label = "wps";
-+			linux,code = <KEY_WPS_BUTTON>;
-+			gpios = <&pio 14 GPIO_ACTIVE_HIGH>;
++			gpios = <&pio 13 GPIO_ACTIVE_LOW>;
 +		};
 +	};
 +
