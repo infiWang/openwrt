@@ -1,0 +1,26 @@
+From 65435fc56abaf8aceb067490f01dcc8ad709837f Mon Sep 17 00:00:00 2001
+From: gns <infiwang@pm.me>
+Date: Sat, 20 Sep 2025 17:11:01 +0800
+Subject: [PATCH 3/5] net: phy: aquantia: switch to use phy_get_ofnode()
+
+Use PHY API phy_get_ofnode() helper to get PHY DT node.
+---
+ drivers/net/phy/aquantia.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/phy/aquantia.c b/drivers/net/phy/aquantia.c
+index 34059cb4571..09803fe2c62 100644
+--- a/drivers/net/phy/aquantia.c
++++ b/drivers/net/phy/aquantia.c
+@@ -337,7 +337,7 @@ static int aquantia_set_proto(struct phy_device *phydev,
+ 
+ static int aquantia_dts_config(struct phy_device *phydev)
+ {
+-	ofnode node = phydev->node;
++	ofnode node = phy_get_ofnode(phydev);
+ 	u32 prop;
+ 	u16 reg;
+ 
+-- 
+2.47.2
+
