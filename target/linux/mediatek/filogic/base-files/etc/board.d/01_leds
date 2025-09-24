@@ -52,6 +52,14 @@ bananapi,bpi-r4-poe)
 	ucidef_set_led_netdev "lan2" "lan2" "mt7530-0:02:green:lan" "lan2" "link tx rx"
 	ucidef_set_led_netdev "lan3" "lan3" "mt7530-0:03:green:lan" "lan3" "link tx rx"
 	;;
+buffalo,wxr18000be10p|\
+buffalo,wxr18000be10p-ubootmod)
+	ucidef_set_led_default "power" "POWER" "white:power" "1"
+	ucidef_set_led_netdev "internet" "INTERNET" "white:wan-online" "internet" "link"
+	ucidef_set_led_netdev "wireless2g" "WIRELESS-2G" "white:wlan" "phy0.0-ap0" "link"
+	ucidef_set_led_netdev "wireless5g" "WIRELESS-5G" "white:wlan" "phy0.1-ap0" "link"
+	ucidef_set_led_netdev "wireless6g" "WIRELESS-6G" "white:wlan" "phy0.2-ap0" "link"
+	;;
 cudy,re3000-v1|\
 wavlink,wl-wn573hx3)
 	ucidef_set_led_netdev "lan" "lan" "green:lan" "eth0" "link tx rx"

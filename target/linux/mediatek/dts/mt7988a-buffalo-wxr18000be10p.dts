@@ -1,0 +1,119 @@
+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+
+#include "mt7988a-buffalo-wxr18000be10p.dtsi"
+
+/ {
+	model = "Buffalo WXR18000BE10P";
+	compatible = "buffalo,wxr18000be10p", "mediatek,mt7988a";
+
+	chosen {
+		bootargs-override = "earlycon=uart8250,mmio32,0x11000000 pci=pcie_bus_perf console=ttyS0,115200n1";
+		stdout-path = "serial0:115200n1";
+	};
+};
+
+&spi_nand {
+	mediatek,nmbm;
+	// TODO: Correct BMT settings
+	mediatek,bmt-max-ratio = <1>;
+	mediatek,bmt-max-reserved-blocks = <64>;
+
+	partitions {
+		compatible = "fixed-partitions";
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		partition@0 {
+			reg = <0x0 0x100000>;
+			label = "BL2";
+			read-only;
+		};
+
+		partition@100000 {
+			reg = <0x100000 0x80000>;
+			label = "u-boot-env";
+			read-only;
+		};
+
+		partition@180000 {
+			reg = <0x180000 0x400000>;
+			label = "Factory";
+			read-only;
+
+			BUFFALO_WXR18000BE10P_FACTORY_LAYOUT;
+		};
+
+		partition@580000 {
+			reg = <0x580000 0x200000>;
+			label = "FIP";
+			read-only;
+		};
+
+		partition@780000 {
+			reg = <0x780000 0x80000>;
+			label = "ORGDATA";
+			read-only;
+		};
+
+		partition@800000 {
+			reg = <0x800000 0x5000000>;
+			compatible = "linux,ubi";
+			label = "ubi";
+		};
+
+		partition@5800000 {
+			reg = <0x5800000 0x5000000>;
+			label = "rootfs-recover";
+		};
+
+		partition@a800000 {
+			reg = <0xa800000 0x4800000>;
+			label = "user_property";
+		};
+
+		/* 0xf000000 - 0x10000000 (16MB) reserved for NMBM */
+	};
+};
+
+&gmac0 {
+    nvmem-cells = <&macaddr_factory_ffff4>;
+    nvmem-cell-names = "mac-address";
+};
+
+&gmac1 {
+    nvmem-cells = <&macaddr_factory_ffff4>;
+    nvmem-cell-names = "mac-address";
+};
+
+&gmac2 {
+    nvmem-cells = <&macaddr_factory_ffff4>;
+    nvmem-cell-names = "mac-address";
+};
+
+&mt7996_wifi {
+    #address-cells = <1>;
+    #size-cells = <0>;
+    nvmem-cells = <&eeprom_factory_0>;
+    nvmem-cell-names = "eeprom";
+
+    band@0 {
+        /* 2.4 GHz */
+        reg = <0>;
+        nvmem-cells = <&macaddr_factory_4>;
+        nvmem-cell-names = "mac-address";
+    };
+
+    band@1 {
+        /* 5 GHz */
+        reg = <1>;
+        nvmem-cells = <&macaddr_factory_a>;
+        nvmem-cell-names = "mac-address";
+    };
+
+    band@2 {
+        /* 6 GHz */
+        reg = <2>;
+        nvmem-cells = <&macaddr_factory_2c0>;
+        nvmem-cell-names = "mac-address";
+    };
+};
