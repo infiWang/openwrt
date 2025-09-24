@@ -857,6 +857,18 @@ define U-Boot/mt7988_bananapi_bpi-r4-poe-snand
   DEPENDS:=+trusted-firmware-a-mt7988-spim-nand-ubi-comb
 endef
 
+define U-Boot/mt7988_buffalo_wxr18000be10p
+  NAME:=Buffalo WXR18000BE10P
+  BUILD_SUBTARGET:=filogic
+  BUILD_DEVICES:=buffalo_wxr18000be10p-ubootmod
+  UBOOT_CONFIG:=mt7988a_buffalo_wxr18000be10p
+  UBOOT_IMAGE:=u-boot.fip
+  BL2_BOOTDEV:=spim-nand-ubi
+  BL2_SOC:=mt7988
+  BL2_DDRTYPE:=comb
+  DEPENDS:=+trusted-firmware-a-mt7988-spim-nand-ubi-comb
+endef
+
 define U-Boot/mt7988_rfb-spim-nand
   NAME:=MT7988 Reference Board
   BUILD_SUBTARGET:=filogic
@@ -991,6 +1003,7 @@ UBOOT_TARGETS := \
 	mt7988_bananapi_bpi-r4-poe-emmc \
 	mt7988_bananapi_bpi-r4-poe-sdmmc \
 	mt7988_bananapi_bpi-r4-poe-snand \
+	mt7988_buffalo_wxr18000be10p \
 	mt7988_rfb-spim-nand \
 	mt7988_rfb-snand \
 	mt7988_rfb-nor \
