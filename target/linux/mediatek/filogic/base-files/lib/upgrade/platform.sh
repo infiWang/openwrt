@@ -85,6 +85,7 @@ platform_do_upgrade() {
 	bananapi,bpi-r4|\
 	bananapi,bpi-r4-2g5|\
 	bananapi,bpi-r4-poe|\
+	buffalo,wxr18000be10p-ubootmod|\
 	cmcc,a10-ubootmod|\
 	cmcc,rax3000m|\
 	cudy,tr3000-v1-ubootmod|\
@@ -145,6 +146,7 @@ platform_do_upgrade() {
 		nand_do_upgrade "$1"
 		;;
 	buffalo,wsr-6000ax8|\
+	buffalo,wxr18000be10p|\
 	cudy,wr3000h-v1|\
 	cudy,wr3000p-v1)
 		CI_UBIPART="ubi"
@@ -249,6 +251,7 @@ platform_check_image() {
 	bananapi,bpi-r4|\
 	bananapi,bpi-r4-2g5|\
 	bananapi,bpi-r4-poe|\
+	buffalo,wxr18000be10p-ubootmod|\
 	cmcc,a10-ubootmod|\
 	cmcc,rax3000m|\
 	cudy,tr3000-v1-ubootmod|\
@@ -348,7 +351,8 @@ platform_pre_upgrade() {
 	asus,zenwifi-bt8)
 		asus_initial_setup
 		;;
-	buffalo,wsr-6000ax8)
+	buffalo,wsr-6000ax8|\
+	buffalo,wxr18000be10p)
 		buffalo_initial_setup
 		;;
 	xiaomi,mi-router-ax3000t|\

@@ -1,0 +1,452 @@
+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+
+/dts-v1/;
+
+#include "mt7988a.dtsi"
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/input/input.h>
+#include <dt-bindings/leds/common.h>
+#include <dt-bindings/pinctrl/mt65xx.h>
+#include <dt-bindings/regulator/richtek,rt5190a-regulator.h>
+
+#define BUFFALO_WXR18000BE10P_FACTORY_LAYOUT				\
+	nvmem-layout {					\
+		compatible = "fixed-layout";		\
+		#address-cells = <1>;			\
+		#size-cells = <1>;			\
+							\
+		eeprom_factory_0: eeprom@0 {		\
+			reg = <0x0 0x1e00>;		\
+		};					\
+							\
+		macaddr_factory_4: macaddr@4 {		\
+			reg = <0x4 0x6>;		\
+		};					\
+							\
+		macaddr_factory_a: macaddr@a {		\
+			reg = <0xa 0x6>;		\
+		};					\
+							\
+		macaddr_factory_2c0: macaddr@2c0 { \
+			reg = <0x2c0 0x6>;		\
+		};					\
+							\
+		macaddr_factory_ffff4: macaddr@ffff4 { \
+			reg = <0xffff4 0x6>;		\
+		};					\
+	}
+
+/ {
+	aliases {
+		led-boot = &led_router_amber;
+		led-failsafe = &led_router_amber;
+		led-running = &led_router_white;
+		led-upgrade = &led_router_amber;
+		label-mac-device = &gmac0;
+		serial0 = &serial0;
+	};
+
+	memory {
+		reg = <0x0 0x40000000 0x0 0x40000000>;
+	};
+
+	reg_1p8v: regulator-1p8v {
+		compatible = "regulator-fixed";
+		regulator-name = "fixed-1.8V";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		regulator-boot-on;
+		regulator-always-on;
+	};
+
+	reg_3p3v: regulator-3p3v {
+		compatible = "regulator-fixed";
+		regulator-name = "fixed-3.3V";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		regulator-boot-on;
+		regulator-always-on;
+	};
+
+	gpio-keys {
+		compatible = "gpio-keys";
+		pinctrl-names = "default";
+		pinctrl-0 = <&button_pins>;
+
+		/*
+		 * mode: 3x position switch
+		 *
+		 * - ROUTER
+		 * - AP
+		 * - WB (Wireless Bridge)
+		 */
+		ap {
+			label = "mode-ap";
+			gpios = <&pio 1 GPIO_ACTIVE_LOW>;
+			linux,code = <BTN_0>;
+		};
+
+		bridge {
+			label = "mode-wb";
+			gpios = <&pio 0 GPIO_ACTIVE_LOW>;
+			linux,code = <BTN_1>;
+		};
+
+		/*
+		 * op: 2x position switch
+		 *
+		 * - AUTO
+		 * - MANUAL (select Router/AP/WB manually)
+		 */
+		auto {
+			label = "op-auto";
+			gpios = <&pio 58 GPIO_ACTIVE_LOW>;
+			linux,code = <BTN_2>;
+		};
+
+		factory {
+			label = "reset";
+			linux,code = <KEY_RESTART>;
+			gpios = <&pio 13 GPIO_ACTIVE_LOW>;
+		};
+
+		wps {
+			label = "aoss";
+			linux,code = <KEY_WPS_BUTTON>;
+			gpios = <&pio 14 GPIO_ACTIVE_LOW>;
+		};
+	};
+
+	gpio-leds {
+		compatible = "gpio-leds";
+
+		led_power_white: led-0 {
+			function = LED_FUNCTION_POWER;
+			color = <LED_COLOR_ID_WHITE>;
+			gpios = <&pio 57 GPIO_ACTIVE_HIGH>;
+			default-state = "on";
+		};
+
+		led_power_amber: led-1 {
+			function = LED_FUNCTION_POWER;
+			color = <LED_COLOR_ID_AMBER>;
+			gpios = <&pio 21 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+
+		led_router_white: led-3 {
+			function = LED_FUNCTION_STATUS;
+			color = <LED_COLOR_ID_WHITE>;
+			gpios = <&pio 70 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+
+		led_router_amber: led-2 {
+			function = LED_FUNCTION_STATUS;
+			color = <LED_COLOR_ID_AMBER>;
+			gpios = <&pio 68 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+
+		led_internet_white: led-5 {
+			function = LED_FUNCTION_WAN_ONLINE;
+			color = <LED_COLOR_ID_WHITE>;
+			gpios = <&pio 67 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+
+		led_internet_amber: led-4 {
+			function = LED_FUNCTION_WAN_ONLINE;
+			color = <LED_COLOR_ID_AMBER>;
+			gpios = <&pio 66 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+
+		led_wireless_white: led-7 {
+			function = LED_FUNCTION_WLAN;
+			color = <LED_COLOR_ID_WHITE>;
+			gpios = <&pio 65 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+
+		led_wireless_amber: led-6 {
+			function = LED_FUNCTION_WLAN;
+			color = <LED_COLOR_ID_AMBER>;
+			gpios = <&pio 64 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+	};
+};
+
+&cpu0 {
+	proc-supply = <&rt5190_buck3>;
+};
+
+&cpu1 {
+	proc-supply = <&rt5190_buck3>;
+};
+
+&cpu2 {
+	proc-supply = <&rt5190_buck3>;
+};
+
+&cpu3 {
+	proc-supply = <&rt5190_buck3>;
+};
+
+&cci {
+	proc-supply = <&rt5190_buck3>;
+};
+
+&eth {
+	pinctrl-0 = <&mdio0_pins>;
+	pinctrl-names = "default";
+	status = "okay";
+};
+
+&gmac0 {
+	status = "okay";
+};
+
+&gmac1 {
+	label = "lan1";
+	phy-mode = "usxgmii";
+	phy-connection-type = "usxgmii";
+	phy = <&phy8>;
+
+	status = "okay";
+};
+
+&gmac2 {
+	label = "internet";
+	phy-mode = "usxgmii";
+	phy-connection-type = "usxgmii";
+	phy = <&phy0>;
+
+	status = "okay";
+};
+
+&gsw_phy0 {
+	status = "disabled";
+};
+
+&i2c0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c0_pins>;
+	status = "okay";
+
+	rt5190a_64: rt5190a@64 {
+		compatible = "richtek,rt5190a";
+		reg = <0x64>;
+		/*interrupts-extended = <&gpio26 0 IRQ_TYPE_LEVEL_LOW>;*/
+		vin2-supply = <&rt5190_buck1>;
+		vin3-supply = <&rt5190_buck1>;
+		vin4-supply = <&rt5190_buck1>;
+
+		regulators {
+			rt5190_buck1: buck1 {
+				regulator-name = "rt5190a-buck1";
+				regulator-min-microvolt = <5090000>;
+				regulator-max-microvolt = <5090000>;
+				regulator-allowed-modes =
+				<RT5190A_OPMODE_AUTO RT5190A_OPMODE_FPWM>;
+				regulator-boot-on;
+				regulator-always-on;
+			};
+
+			buck2 {
+				regulator-name = "vcore";
+				regulator-min-microvolt = <600000>;
+				regulator-max-microvolt = <1400000>;
+				regulator-boot-on;
+				regulator-always-on;
+			};
+
+			rt5190_buck3: buck3 {
+				regulator-name = "vproc";
+				regulator-min-microvolt = <600000>;
+				regulator-max-microvolt = <1400000>;
+				regulator-boot-on;
+			};
+
+			buck4 {
+				regulator-name = "rt5190a-buck4";
+				regulator-min-microvolt = <850000>;
+				regulator-max-microvolt = <850000>;
+				regulator-allowed-modes =
+				<RT5190A_OPMODE_AUTO RT5190A_OPMODE_FPWM>;
+				regulator-boot-on;
+				regulator-always-on;
+			};
+
+			ldo {
+				regulator-name = "rt5190a-ldo";
+				regulator-min-microvolt = <1200000>;
+				regulator-max-microvolt = <1200000>;
+				regulator-boot-on;
+				regulator-always-on;
+			};
+		};
+	};
+};
+
+&mdio_bus {
+	phy0: ethernet-phy@0 {
+		/* Marvell CUX3410, LAN1 Port */
+		compatible = "ethernet-phy-ieee802.3-c45";
+		reg = <0>;
+
+		/* reset-gpios = <&pio 71 GPIO_ACTIVE_LOW>;
+		* reset-assert-us = <100000>;
+		* reset-deassert-us = <221000>; */
+
+		firmware-name = "marvell/CUX3410.cld";
+	};
+
+	phy8: ethernet-phy@8 {
+		/* Marvell CUX3410, INTERNET Port */
+		compatible = "ethernet-phy-ieee802.3-c45";
+		reg = <8>;
+
+		/* reset-gpios = <&pio 72 GPIO_ACTIVE_LOW>;
+		* reset-assert-us = <100000>;
+		* reset-deassert-us = <221000>; */
+
+		firmware-name = "marvell/CUX3410.cld";
+	};
+};
+
+&pcie0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pcie0_1_pins>;
+	reset-gpios = <&pio 7 GPIO_ACTIVE_LOW>;
+	status = "okay";
+
+	pcie@0,0 {
+		reg = <0x0000 0 0 0 0>;
+		#address-cells = <3>;
+		#size-cells = <2>;
+
+		mt7996_wifi: mt7996@0,0 {
+			reg = <0x0000 0 0 0 0>;
+		};
+	};
+};
+
+&pcie1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pcie1_pins>;
+	status = "okay";
+};
+
+&pcie2 {
+	status = "disabled";
+};
+
+&pcie3 {
+	status = "disabled";
+};
+
+&pio {
+	button_pins: button-pins {
+		pins = "GPIO_RESET", "GPIO_WPS";
+		mediatek,pull-down-adv = <0>; /* bias-disable */
+	};
+
+	mdio0_pins: mdio0-pins {
+		mux {
+			function = "eth";
+			groups = "mdc_mdio0";
+		};
+
+		conf {
+			groups = "mdc_mdio0";
+			drive-strength = <MTK_DRIVE_8mA>;
+		};
+	};
+
+	i2c0_pins: i2c0-g0-pins {
+		mux {
+			function = "i2c";
+			groups = "i2c0_1";
+		};
+	};
+
+	spi0_flash_pins: spi0-flash-pins {
+		mux {
+			function = "spi";
+			groups = "spi0", "spi0_wp_hold";
+		};
+	};
+
+	pcie0_1_pins: pcie0-pins-g1 {
+		mux {
+			function = "pcie";
+			groups = "pcie_2l_0_pereset", "pcie_clk_req_n0_0";
+		};
+	};
+};
+
+&spi0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&spi0_flash_pins>;
+	status = "okay";
+
+	spi_nand: spi_nand@0 {
+		compatible = "spi-nand";
+		reg = <0>;
+
+		spi-max-frequency = <52000000>;
+		spi-tx-bus-width = <4>;
+		spi-rx-bus-width = <4>;
+
+		spi-cal-enable;
+		spi-cal-mode = "read-data";
+		spi-cal-datalen = <7>;
+		spi-cal-data = /bits/ 8 <0x53 0x50 0x49 0x4e 0x41 0x4e 0x44>;
+		spi-cal-addrlen = <5>;
+		spi-cal-addr = /bits/ 32 <0x0 0x0 0x0 0x0 0x0>;
+	};
+};
+
+&ssusb1 {
+	status = "okay";
+};
+
+&switch {
+	status = "okay";
+
+	ports {
+		port@0 {
+			status = "disabled";
+		};
+
+		port@1 {
+			label = "lan4";
+		};
+
+		port@2 {
+			label = "lan3";
+		};
+
+		port@3 {
+			label = "lan2";
+		};
+	};
+};
+
+&tphy {
+	status = "okay";
+};
+
+&serial0 {
+	status = "okay";
+};
+
+&watchdog {
+	status = "okay";
+};
+
+&xsphy {
+	status = "okay";
+};
